@@ -1,4 +1,5 @@
 import GestionDatosDinamicos.GestionDatosDinamicos;
+import AnalisisyOrganizaciondeInformacion.AnalisisOrganizacionInformacion;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -30,8 +31,19 @@ public class Main extends JFrame {
         JButton botonAnalisisOrganizacion = new JButton("Análisis y Organización de Información");
         botonAnalisisOrganizacion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                java.util.List<String> nombres = Arrays.asList("Juan", "Ana", "Pedro", "María", "Carlos");
-                // Aquí podrías llamar a métodos de la clase AnalisisOrganizacionInformacion si la tienes definida
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JFrame frame = new JFrame("Análisis y Organización de Información");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setSize(400, 300);
+                        frame.setLocationRelativeTo(null);
+
+                        AnalisisOrganizacionInformacion analisisOrganizacionInformacion = new AnalisisOrganizacionInformacion();
+                        frame.add(analisisOrganizacionInformacion);
+
+                        frame.setVisible(true);
+                    }
+                });
             }
         });
 
@@ -60,6 +72,5 @@ public class Main extends JFrame {
         });
     }
 }
-
 
 

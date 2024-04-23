@@ -1,50 +1,112 @@
 package AnalisisyOrganizaciondeInformacion;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
-public class AnalisisOrganizacionInformacion {
-    // Método para ordenar una lista de String utilizando el algoritmo de la burbuja
-    public static List<String> ordenarLista(List<String> lista) {
-        List<String> listaOrdenada = new ArrayList<>(lista); // Crear una copia de la lista para no modificar la original
-        int n = listaOrdenada.size();
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (listaOrdenada.get(j).compareTo(listaOrdenada.get(j + 1)) > 0) {
-                    // Intercambiar elementos si están en el orden incorrecto
-                    String temp = listaOrdenada.get(j);
-                    listaOrdenada.set(j, listaOrdenada.get(j + 1));
-                    listaOrdenada.set(j + 1, temp);
+public class AnalisisOrganizacionInformacion extends JPanel {
+    public AnalisisOrganizacionInformacion() {
+        // Simulación de datos de ventas
+        List<Venta> ventas = new ArrayList<>();
+        ventas.add(new Venta("Producto A", 100, "Juan", "01/01/2024"));
+        ventas.add(new Venta("Producto B", 150, "Ana", "02/01/2024"));
+        ventas.add(new Venta("Producto C", 200, "Pedro", "03/01/2024"));
+        ventas.add(new Venta("Producto D", 120, "María", "04/01/2024"));
+        ventas.add(new Venta("Producto E", 180, "Carlos", "05/01/2024"));
+
+        // Botones para ordenar y filtrar las ventas
+        JButton botonOrdenarPorNombre = new JButton("Ordenar por Nombre");
+        botonOrdenarPorNombre.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Collections.sort(ventas, new Comparator<Venta>() {
+                    public int compare(Venta v1, Venta v2) {
+                        return v1.getNombreCliente().compareTo(v2.getNombreCliente());
+                    }
+                });
+                mostrarVentas(ventas);
+            }
+        });
+
+        JButton botonOrdenarPorFecha = new JButton("Ordenar por Fecha");
+        botonOrdenarPorFecha.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Collections.sort(ventas, new Comparator<Venta>() {
+                    public int compare(Venta v1, Venta v2) {
+                        return v1.getFecha().compareTo(v2.getFecha());
+                    }
+                });
+                mostrarVentas(ventas);
+            }
+        });
+
+        // Botón para filtrar ventas
+        JButton botonFiltrarPorProducto = new JButton("Filtrar por Producto 'Producto A'");
+        botonFiltrarPorProducto.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                List<Venta> ventasFiltradas = new ArrayList<>();
+                for (Venta venta : ventas) {
+                    if (venta.getProducto().equals("Producto A")) {
+                        ventasFiltradas.add(venta);
+                    }
                 }
+                mostrarVentas(ventasFiltradas);
             }
-        }
-        return listaOrdenada;
+        });
+
+        // Panel para botones
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new GridLayout(3, 1));
+        panelBotones.add(botonOrdenarPorNombre);
+        panelBotones.add(botonOrdenarPorFecha);
+        panelBotones.add(botonFiltrarPorProducto);
+
+        // Lista de ventas
+        JList<Venta> listaVentas = new JList<>(ventas.toArray(new Venta[0]));
+
+        setLayout(new BorderLayout());
+        add(new JScrollPane(listaVentas), BorderLayout.CENTER);
+        add(panelBotones, BorderLayout.SOUTH);
     }
 
-    // Método para buscar un elemento en una lista de String utilizando búsqueda lineal
-    public static int buscarElemento(List<String> lista, String elemento) {
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).equals(elemento)) {
-                return i; // Devolver el índice del elemento encontrado
-            }
-        }
-        return -1; // Devolver -1 si el elemento no se encuentra en la lista
-    }
-
-    // Método para buscar un elemento en una lista de String ordenada utilizando búsqueda binaria
-    public static int buscarElementoOrdenado(List<String> lista, String elemento) {
-        int inicio = 0;
-        int fin = lista.size() - 1;
-        while (inicio <= fin) {
-            int medio = inicio + (fin - inicio) / 2;
-            int comparacion = elemento.compareTo(lista.get(medio));
-            if (comparacion == 0) {
-                return medio; // Devolver el índice del elemento encontrado
-            } else if (comparacion < 0) {
-                fin = medio - 1; // Buscar en la mitad izquierda
-            } else {
-                inicio = medio + 1; // Buscar en la mitad derecha
-            }
-        }
-        return -1; // Devolver -1 si el elemento no se encuentra en la lista
+    private void mostrarVentas(List<Venta> ventas) {
+        JList<Venta> listaVentas = new JList<>(ventas.toArray(new Venta[0]));
+        JOptionPane.showMessageDialog(null, new JScrollPane(listaVentas), "Ventas", JOptionPane.PLAIN_MESSAGE);
     }
 }
+
+class Venta {
+    private String producto;
+    private double monto;
+    private String nombreCliente;
+    private String fecha;
+
+    public Venta(String producto, double monto, String nombreCliente, String fecha) {
+        this.producto = producto;
+        this.monto = monto;
+        this.nombreCliente = nombreCliente;
+        this.fecha = fecha;
+    }
+
+    public String getProducto() {
+        return producto;
+    }
+
+    public double getMonto() {
+        return monto;
+    }
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public String toString() {
+        return "Producto: " + producto + ", Monto: " + monto + ", Cliente: " + nombreCliente + ", Fecha: " + fecha;
+    }
+}
+

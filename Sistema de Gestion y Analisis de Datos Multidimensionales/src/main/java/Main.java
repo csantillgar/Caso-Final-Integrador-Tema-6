@@ -1,5 +1,6 @@
 import GestionDatosDinamicos.GestionDatosDinamicos;
 import AnalisisyOrganizaciondeInformacion.AnalisisOrganizacionInformacion;
+import MapasyAsociacióndeDatos.MapasAsociacionDatosPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -47,15 +48,35 @@ public class Main extends JFrame {
             }
         });
 
+        // Botones para el módulo de mapas y asociación de datos
+        JButton botonMapasAsociacionDatos = new JButton("Mapas y Asociación de Datos");
+        botonMapasAsociacionDatos.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JFrame frame = new JFrame("Mapas y Asociación de Datos");
+                        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        frame.setSize(400, 300);
+                        frame.setLocationRelativeTo(null);
+                        MapasAsociacionDatosPanel mapasAsociacionDatosPanel = new MapasAsociacionDatosPanel();
+                        frame.add(mapasAsociacionDatosPanel);
+                        frame.setVisible(true);
+                    }
+                });
+            }
+        });
+
+
         JPanel panelBotones = new JPanel();
-        panelBotones.setLayout(new GridLayout(2, 1));
+        panelBotones.setLayout(new GridLayout(3, 1));
         panelBotones.add(botonGestionDatos);
         panelBotones.add(botonAnalisisOrganizacion);
+        panelBotones.add(botonMapasAsociacionDatos);
 
         add(panelBotones, BorderLayout.CENTER);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Menú Principal");
-        setSize(400, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null); // Centrar la ventana en la pantalla
         setVisible(true);
     }
